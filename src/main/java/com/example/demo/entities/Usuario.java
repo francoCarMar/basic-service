@@ -15,7 +15,6 @@ import jakarta.persistence.Id;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long dni;
 
     private String nombre;
