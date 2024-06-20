@@ -15,11 +15,12 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public boolean login(@RequestBody LoginDto loginDto) {
-        Long dni = loginDto.dni();
-        String password = loginDto.password();
-        return usuarioService.login(dni, password);
+    public ResponseEntity<Void> login(@RequestBody LoginDto logindto) {
+        String correo = logindto.correo();
+        String password = logindto.password();
+        if(usuarioService.login(correo,password))
+            return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/registro")

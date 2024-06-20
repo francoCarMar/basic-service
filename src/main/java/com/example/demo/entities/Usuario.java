@@ -1,12 +1,9 @@
 package com.example.demo.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.Id;
 
 @Entity
 @Data
@@ -18,8 +15,12 @@ public class Usuario {
     private Long dni;
 
     private String nombre;
+
     private String apellido;
+
+    @Column(unique = true, nullable = false)
     private String correo;
+
     private String password;
 
 }

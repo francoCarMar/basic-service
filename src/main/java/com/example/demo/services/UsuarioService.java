@@ -16,9 +16,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioMapper usuarioMapper;
 
-    public boolean login(Long dni, String password) {
-        if(usuarioRepository.existsById(dni)){
-           Usuario usuario = usuarioRepository.findById(dni).get();
+    public boolean login(String correo, String password) {
+        if(usuarioRepository.existsByCorreo(correo)){
+           Usuario usuario = usuarioRepository.findByCorreo(correo).get();
            return usuario.getPassword().equals(password);
         }return false;
     }

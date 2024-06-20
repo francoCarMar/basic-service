@@ -1,4 +1,4 @@
 package com.example.demo.dtos;
 
-public record LoginDto(Long dni, String password) {
+public record LoginDto(String correo, String password) {
 }
