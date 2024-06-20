@@ -24,16 +24,28 @@ public class UsuarioController {
     }
 
     @PostMapping("/registro")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Usuario registrar(@RequestBody Usuario usuario) {
-        return usuarioService.registrar(usuario);
+    public ResponseEntity<Object> registrar(@RequestBody Usuario usuario) {
+        try{
+            Usuario usr = usuarioService.registrar(usuario);
+            return new ResponseEntity<>(usr, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/dni/{id}")
     public ResponseEntity<UsuarioDto> getUsuario(@PathVariable Long id){
         try {
-            UsuarioDto usuario = usuarioService.getUsuario(id);
             return new ResponseEntity<>(usuarioService.getUsuario(id), HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/correo/{correo}")
+    public ResponseEntity<UsuarioDto> getUsuario(@PathVariable String correo){
+        try {
+            return new ResponseEntity<>(usuarioService.getUsuarioByCorreo(correo), HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
