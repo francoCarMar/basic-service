@@ -33,10 +33,10 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/dni/{id}")
-    public ResponseEntity<UsuarioDto> getUsuario(@PathVariable Long id){
+    @GetMapping("/dni/{dni}")
+    public ResponseEntity<UsuarioDto> getUsuario(@PathVariable Long dni){
         try {
-            return new ResponseEntity<>(usuarioService.getUsuario(id), HttpStatus.OK);
+            return new ResponseEntity<>(usuarioService.getUsuario(dni), HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
@@ -48,6 +48,16 @@ public class UsuarioController {
             return new ResponseEntity<>(usuarioService.getUsuarioByCorreo(correo), HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/update/{correo}")
+    public ResponseEntity<UsuarioDto> updateUsuario(@RequestBody UsuarioDto usuarioDto, @PathVariable String correo){
+        try{
+           return new ResponseEntity<>(usuarioService.updateUsuario(usuarioDto, correo), HttpStatus.OK);
+        }catch (Exception e){
+           System.out.println(e.getMessage());
+           return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 }
