@@ -48,7 +48,8 @@ public class UsuarioService {
         usuario.setCorreo(usuarioDto.correo());
         usuario.setNombre(usuarioDto.nombre());
         usuario.setApellido(usuarioDto.apellido());
-        usuario.setDni(usuarioDto.dni());
+        if(usuarioDto.dni() != usuario.getDni())
+            usuario.setDni(usuarioDto.dni());
         usuarioRepository.save(usuario);
         return usuarioDto;
     }
