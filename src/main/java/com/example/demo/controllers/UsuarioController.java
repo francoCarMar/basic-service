@@ -26,7 +26,7 @@ public class UsuarioController {
     @PostMapping("/registro")
     public ResponseEntity<Object> registrar(@RequestBody Usuario usuario) {
         try{
-            Usuario usr = usuarioService.registrar(usuario);
+            UsuarioDto usr = usuarioService.registrar(usuario);
             return new ResponseEntity<>(usr, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);

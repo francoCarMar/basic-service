@@ -24,12 +24,12 @@ public class UsuarioService {
         }return false;
     }
 
-    public Usuario registrar(Usuario usuario) {
+    public UsuarioDto registrar(Usuario usuario) {
         if(usuarioRepository.existsByCorreo(usuario.getCorreo()))
             throw new RuntimeException("Correo registrado con anterioridad");
         if(usuarioRepository.existsById(usuario.getDni()))
             throw new RuntimeException("Dni registrado con anterioridad");
-        return usuarioRepository.save(usuario);
+        return usuarioMapper.usuarioToUsuarioDto(usuarioRepository.save(usuario));
     }
 
     public UsuarioDto getUsuario(Long dni){
