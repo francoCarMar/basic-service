@@ -17,11 +17,15 @@ public class UsuarioService {
     @Autowired
     private UsuarioMapper usuarioMapper;
 
-    public boolean login(String correo, String password) {
-        if(usuarioRepository.existsByCorreo(correo)){
-           Usuario usuario = usuarioRepository.findByCorreo(correo).get();
-           return usuario.getPassword().equals(password);
-        }return false;
+    public UsuarioDto login(String correo, String password) {
+        Usuario usuario = usuarioRepository.findByCorreo(correo).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        validatePassword(usuario, password);
+        return usuarioMapper.usuarioToUsuarioDto(usuario);
+    }
+
+    private void validatePassword(Usuario usuario, String password){
+        if(!usuario.getPassword().equals(password))
+            throw new RuntimeException("Contraseña incorrecta");
     }
 
     public UsuarioDto registrar(Usuario usuario) {

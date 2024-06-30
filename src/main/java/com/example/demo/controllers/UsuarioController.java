@@ -15,12 +15,12 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginDto logindto) {
-        String correo = logindto.correo();
-        String password = logindto.password();
-        if(usuarioService.login(correo,password))
-            return new ResponseEntity<>( HttpStatus.OK);
-        return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+    public ResponseEntity<UsuarioDto> login(@RequestBody LoginDto logindto) {
+        try{
+            return new ResponseEntity<>(usuarioService.login(logindto.correo(), logindto.password()), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/registro")
