@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class UsuarioService {
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+
+    private final UsuarioMapper usuarioMapper;
 
     @Autowired
-    private UsuarioMapper usuarioMapper;
+    public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioMapper = usuarioMapper;
+    }
 
     public UsuarioDto login(String correo, String password) {
         Usuario usuario = usuarioRepository.findByCorreo(correo).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -23,36 +27,36 @@ public class UsuarioService {
         return usuarioMapper.usuarioToUsuarioDto(usuario);
     }
 
-    private void validatePassword(Usuario usuario, String password){
-        if(!usuario.getPassword().equals(password))
+    private void validatePassword(Usuario usuario, String password) {
+        if (!usuario.getPassword().equals(password))
             throw new RuntimeException("Contraseña incorrecta");
     }
 
     public UsuarioDto registrar(Usuario usuario) {
-        if(usuarioRepository.existsByCorreo(usuario.getCorreo()))
+        if (usuarioRepository.existsByCorreo(usuario.getCorreo()))
             throw new RuntimeException("Correo registrado con anterioridad");
-        if(usuarioRepository.existsById(usuario.getDni()))
+        if (usuarioRepository.existsByDni(usuario.getDni()))
             throw new RuntimeException("Dni registrado con anterioridad");
         return usuarioMapper.usuarioToUsuarioDto(usuarioRepository.save(usuario));
     }
 
-    public UsuarioDto getUsuario(Long dni){
+    public UsuarioDto getUsuario(Long dni) {
         Usuario usuario = usuarioRepository.findByDni(dni).orElseThrow();
         return usuarioMapper.usuarioToUsuarioDto(usuario);
     }
 
-    public UsuarioDto getUsuarioByCorreo(String correo){
+    public UsuarioDto getUsuarioByCorreo(String correo) {
         Usuario usuario = usuarioRepository.findByCorreo(correo).orElseThrow();
         return usuarioMapper.usuarioToUsuarioDto(usuario);
     }
 
     @Transactional
-    public UsuarioDto updateUsuario(UsuarioDto usuarioDto, String correo){
-        Usuario usuario = usuarioRepository.findByCorreo(correo).orElseThrow();
+    public UsuarioDto updateUsuario(UsuarioDto usuarioDto, String correo) {
+        Usuario usuario = usuarioRepository.findByCorreo(correo).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         usuario.setCorreo(usuarioDto.correo());
         usuario.setNombre(usuarioDto.nombre());
         usuario.setApellido(usuarioDto.apellido());
-        if(usuarioDto.dni() != usuario.getDni())
+        if (usuarioDto.dni() != usuario.getDni())
             usuario.setDni(usuarioDto.dni());
         usuarioRepository.save(usuario);
         return usuarioDto;

@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UsuarioController {
+    private final UsuarioService usuarioService;
+
     @Autowired
-    private UsuarioService usuarioService;
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginDto logindto) {
